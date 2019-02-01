@@ -1,6 +1,15 @@
 <html>
   <script>
-    parent.document.getElementById(window.name);
+    //parent.document.getElementById(window.name); // Cauxa XSS
+    addressSelected = {'nome': 'valor'};
+    var event;
+    if(typeof window.CustomEvent === "function") {
+         event = new CustomEvent('addressSelected', { detail: addressSelected });
+    } else {
+         var event = document.createEvent('CustomEvent');
+         event.initCustomEvent('addressSelected', false, false, addressSelected);
+    }
+
     alert("Olá Mundo!!!");
   </script>
   <body>
