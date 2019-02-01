@@ -1,18 +1,18 @@
+<!DOCTYPE html>
 <html>
-  <script>
-    //parent.document.getElementById(window.name); // Cauxa XSS
-    addressSelected = {'nome': 'valor'};
-    var event;
-    if(typeof window.CustomEvent === "function") {
-         event = new CustomEvent('addressSelected', { detail: addressSelected });
-    } else {
-         var event = document.createEvent('CustomEvent');
-         event.initCustomEvent('addressSelected', false, false, addressSelected);
-    }
+<head>
+	<title>My Iframe</title>
+</head>
+<body>
 
-    alert("Olá Mundo!!!");
-  </script>
-  <body>
-    Olá Mundo!!!
-  </body>
+<button>Botão</button>
+
+<script type="text/javascript">
+	document.querySelector('button').onclick = function () {
+		// parent.postMessage("message to be sent", "http://the-website-that-will-receive-the-msg.com")
+		parent.postMessage("myevent", "*")
+	};
+</script>
+
+</body>
 </html>
