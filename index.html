@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>My Iframe</title>
+	<title>Location Management</title>
 </head>
 <body>
-
-<button>Botão</button>
-
+<script type="text/javascript">
+    alert(parent.locationManagerData.address.freeAddress);
+</script>
+<button>Came Back to Vivo Next</button>
 <script type="text/javascript">
 	document.querySelector('button').onclick = function () {
-		// parent.postMessage("message to be sent", "http://the-website-that-will-receive-the-msg.com")
-		parent.postMessage("myevent", "*")
+		// parent.postMessage("message to be sent", "http://vivonext.telefonica.com")
+		parent.postMessage(getSelectedAddress(), "*")
 	};
+
+function getSelectedAddress() {
+    var addressSelected = {
+    "address":{
+        "freeAddress":"174, Rua Desembargador Arno Hoeschl, Florianópolis - Brasil",
+        "stateOrProvince":"SC",
+        "city":"Florianópolis",
+        "locality":"Centro",
+        "streetName":"Rua Desembargador Arno Hoeschl",
+        "streetNrFirst":"174",
+        "postcode":"88015-620"
+    }
+    };
+    return addressSelected;
+}
 </script>
 
 </body>
