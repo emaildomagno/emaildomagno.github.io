@@ -1,35 +1,81 @@
-<!DOCTYPE html>
 <html>
-<head>
-	<title>Location Management</title>
-</head>
-<body>
-<script type="text/javascript">
-    alert(parent.window.locationManagerData.address.freeAddress);
-</script>
-	<h1>Simple test</h1>
-<button>Came Back to Vivo Next</button>
-<script type="text/javascript">
-	document.querySelector('button').onclick = function () {
-		// parent.postMessage("message to be sent", "http://vivonext.telefonica.com")
-		parent.postMessage(getSelectedAddress(), "*")
-	};
+    <head>
+        <script type="text/javascript">
 
-function getSelectedAddress() {
-    var addressSelected = {
-    "address":{
-        "freeAddress":"174, Rua Desembargador Arno Hoeschl, Florianópolis - Brasil",
-        "stateOrProvince":"SC",
-        "city":"Florianópolis",
-        "locality":"Centro",
-        "streetName":"Rua Desembargador Arno Hoeschl",
-        "streetNrFirst":"174",
-        "postcode":"88015-620"
-    }
-    };
-    return addressSelected;
-}
-</script>
+            // addEventListener support for IE8
+            function bindEvent(element, eventName, eventHandler) {
+                if (element.addEventListener) {
+                    element.addEventListener(eventName, eventHandler, false);
+                } else if (element.attachEvent) {
+                    element.attachEvent('on' + eventName, eventHandler);
+                }
+            }
+            // Send a message to the parent
+            var sendMessage = function (msg) {
+                // Make sure you are sending a string, and to stringify JSON
+                window.parent.postMessage(msg, '*');
+            };
 
-</body>
+            //Listen to receive the initial address
+            bindEvent(window, 'message', function (e) {
+                var data = JSON.parse(e.data);
+                if(data.action === "locationManagerData") {
+                    //Get initial address from CRM
+                    console.log(data.address);
+                }
+            });
+
+            //Notify parent that is ready
+            sendMessage(JSON.stringify({
+                "action": "locationManagerReady"
+            }));
+            
+            //User selects a address
+            var addressSelected = {
+              "action": "addressSelected",
+              "address": {
+                "postcode": "88015-620",
+                "stateOrProvince": "SC",
+                "city": "Florianópolis",
+                "locality": "Centro",
+                "streetNr": "213",
+                "streetType": "",
+                "streetName": "Rua Desembargador Arno Hoeschl",
+                "latitude": "",
+                "longetude": "",
+                "accuracy": "",
+                "complements": [
+                  {
+                    "type": "ED",
+                    "value": "Corporate Jardim Botânico"
+                  },
+                  {
+                    "type": "CD",
+                    "value": "CJB"
+                  },
+                  {
+                    "type": "AN",
+                    "value": "6"
+                  }
+                ],
+                "networkOwner": "",
+                "streetCode": "",
+                "CNL": "",
+                "CNLAcronym": "",
+                "telephonicArea": "",
+                "microArea": "",
+                "centralOffice": ""
+              }
+            };
+
+/*            setTimeout(function(){
+                sendMessage(JSON.stringify(addressSelected));
+            }, 2000);
+*/
+        </script>
+    </head>
+    <body>
+            <h1>Teste</h1>
+            <button onclick="sendMessage(JSON.stringify(addressSelected));false;">OK</button>
+    </body>
 </html>
