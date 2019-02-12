@@ -21,6 +21,7 @@
                 var data = JSON.parse(e.data);
                 if(data.action === "locationManagerData") {
                     //Get initial address from CRM
+                    document.getElementById("freeText").value = data.address.freeText;
                     console.log(data.address);
                 }
             });
@@ -76,6 +77,9 @@
     </head>
     <body>
             <h1>Location Management</h1>
+            <form>
+                <input type="text" id="freeText">
+            </form>
             <button onclick="sendMessage(JSON.stringify(addressSelected));false;">OK</button>
     </body>
 </html>
